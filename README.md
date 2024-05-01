@@ -10,7 +10,7 @@ This project aims to create a data pipeline that retrieves information from an e
 
 The database can be accessed through a web browser by visiting the following link: [ClickHouse Web Interface](https://github.demo.trial.altinity.cloud:8443/play). Use `demo` as your username and password (top left corner of the page).
 
-![Fig. 1. ClickHouse web interface](.images/clickhouse_web.png)
+![Fig. 1. ClickHouse web interface](images/clickhouse_web.png)
 
 The dataset you will be working with is stored in the `tripdata` table. The column names are self-explanatory, but note that we are interested in the `fare_amount`, and not the other amount columns available in the table.
 
@@ -26,7 +26,7 @@ Write an SQL query to fetch the following monthly metrics from the dataset for t
 - The average duration per trip on Sundays
 
 The output of the query should be in a format similar to this:
-![Fig. 2. Query output format](.image/query_output.png)
+![Fig. 2. Query output format](image/query_output.png)
 
 
 
