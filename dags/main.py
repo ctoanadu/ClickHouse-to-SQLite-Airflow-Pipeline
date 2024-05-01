@@ -1,10 +1,9 @@
+import datetime
+import sqlite3
+
+import clickhouse_connect
 from airflow import DAG
 from airflow.operators.python import PythonOperator
-
-import datetime 
-import sqlite3
-import clickhouse_connect
-
 
 
 def create_table():
@@ -21,10 +20,10 @@ def create_table():
     None
     """
     try:
-        destination_conn = sqlite3.connect('db/airflow.db')
+        destination_conn = sqlite3.connect("db/airflow.db")
         destination_cursor = destination_conn.cursor()
-        
-        with open('create_table.sql', 'r') as file:
+
+        with open("..query/create_table.sql", "r") as file:
             sql_query = file.read()
         destination_cursor.execute(sql_query)
         destination_conn.commit()
@@ -32,7 +31,6 @@ def create_table():
         print("tripdata table created")
     except Exception as e:
         print(f"An error occured: {e}")
-    
 
 
 def extract_data():
@@ -46,13 +44,17 @@ def extract_data():
     Query result from the ClickHouse database.
     """
     try:
-        client = clickhouse_connect.get_client(host='github.demo.altinity.cloud', port=8443, username='demo', password='demo')
-        with open('trip_data_query.sql', 'r') as file:
+        client = clickhouse_connect.get_client(
+            host="github.demo.altinity.cloud",
+            port=8443,
+            username="demo",
+            password="demo",
+        )
+        with open("..query/trip_data_query.sql", "r") as file:
             sql_query = file.read()
         return client.command(sql_query)
     except Exception as e:
         print(f"An error occured: {e}")
-
 
 
 def insert_table():
@@ -71,34 +73,35 @@ def insert_table():
     None
     """
     try:
-        destination_conn = sqlite3.connect('db/airflow.db')
+        destination_conn = sqlite3.connect("db/airflow.db")
         destination_cursor = destination_conn.cursor()
 
         query_result = extract_data()
         formatted_data = []
 
-        #Process data and split if needed
+        # Process data and split if needed
         for item in query_result:
-            if '\n' in item:
-                formatted_data.extend(item.split('\n'))
+            if "\n" in item:
+                formatted_data.extend(item.split("\n"))
             else:
                 formatted_data.append(item)
 
         # Group data into sublists of 7 elements each
-        grouped_data = [formatted_data[i:i+7] for i in range(0, len(formatted_data), 7)]
+        grouped_data = [
+            formatted_data[i : i + 7] for i in range(0, len(formatted_data), 7)
+        ]
 
-        with open('insert_table.sql', 'r') as file:
+        with open("..query/insert_table.sql", "r") as file:
             sql_query = file.read()
 
-        #Insert the retrieved data into the newly created tripdata table
+        # Insert the retrieved data into the newly created tripdata table
         for row in grouped_data:
             destination_cursor.execute(sql_query, row)
 
         destination_conn.commit()
-        destination_conn.close()   
+        destination_conn.close()
     except Exception as e:
-        print(f"An error occured: {e}") 
-       
+        print(f"An error occured: {e}")
 
 
 with DAG(
@@ -110,25 +113,22 @@ with DAG(
         "retry_delay": datetime.timedelta(minutes=5),
         "start_date": datetime.datetime.utcnow(),
     },
-    catchup=False
+    catchup=False,
 ) as f:
 
     create_table_task = PythonOperator(
-        task_id='create_table',
+        task_id="create_table",
         python_callable=create_table,
     )
 
     extract_data_task = PythonOperator(
-        task_id="extract_data",
-        python_callable=extract_data,
-        provide_context=True     
+        task_id="extract_data", python_callable=extract_data, provide_context=True
     )
 
     insert_table_task = PythonOperator(
-        task_id='insert_table',
+        task_id="insert_table",
         python_callable=insert_table,
     )
 
-    
-    
-create_table_task>> extract_data_task >> insert_table_task
+
+create_table_task >> extract_data_task >> insert_table_task
