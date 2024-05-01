@@ -26,7 +26,7 @@ Write an SQL query to fetch the following monthly metrics from the dataset for t
 - The average duration per trip on Sundays
 
 The output of the query should be in a format similar to this:
-![Fig. 2. Query output format](image/query_output.png)
+![Fig. 2. Query output format](images/query_output.png)
 
 
 
