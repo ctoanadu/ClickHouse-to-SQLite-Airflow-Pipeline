@@ -73,9 +73,12 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     - ${AIRFLOW_PROJ_DIR:-.}/db:/opt/airflow/db
-    - ${AIRFLOW_PROJ_DIR:-.}query/create_table.sql:/opt/airflow/create_table.sql
-    - ${AIRFLOW_PROJ_DIR:-.}query/trip_data_query.sql:/opt/airflow/trip_data_query.sql
-    - ${AIRFLOW_PROJ_DIR:-.}query/insert_table.sql:/opt/airflow/insert_table.sql
+    - /Users/ctoanadu/Developer/ClickHouse-to-SQLite-Airflow-Pipeline/query/create_table.sql:/opt/airflow/create_table.sql
+    - /Users/ctoanadu/Developer/ClickHouse-to-SQLite-Airflow-Pipeline/query/insert_table.sql:/opt/airflow/insert_table.sql
+    - /Users/ctoanadu/Developer/ClickHouse-to-SQLite-Airflow-Pipeline/query/trip_data_query.sql:/opt/airflow/trip_data_query
+    #- ${AIRFLOW_PROJ_DIR:-.}query/create_table.sql:/opt/airflow/create_table.sql
+    #- ${AIRFLOW_PROJ_DIR:-.}query/trip_data_query.sql:/opt/airflow/trip_data_query.sql
+    #- ${AIRFLOW_PROJ_DIR:-.}query/insert_table.sql:/opt/airflow/insert_table.sql
    
     
     
@@ -182,10 +185,15 @@ services:
       - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
       - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
       - ${AIRFLOW_PROJ_DIR:-.}/db:/opt/airflow/db
+      - /Users/ctoanadu/Developer/ClickHouse-to-SQLite-Airflow-Pipeline/query/create_table.sql:/opt/airflow/create_table.sql
+      - /Users/ctoanadu/Developer/ClickHouse-to-SQLite-Airflow-Pipeline/query/insert_table.sql:/opt/airflow/insert_table.sql
+      - /Users/ctoanadu/Developer/ClickHouse-to-SQLite-Airflow-Pipeline/query/trip_data_query.sql:/opt/airflow/trip_data_query.sql
 
-      - ${AIRFLOW_PROJ_DIR:-.}/query/trip_data_query.sql:/opt/airflow/trip_data_query.sql
-      - ${AIRFLOW_PROJ_DIR:-.}/query/create_table.sql:/opt/airflow/create_table.sql
-      - ${AIRFLOW_PROJ_DIR:-.}/query/insert_table.sql:/opt/airflow/insert_table.sql
+
+
+      #- ${AIRFLOW_PROJ_DIR:-.}/query/trip_data_query.sql:/opt/airflow/trip_data_query.sql
+      #- ${AIRFLOW_PROJ_DIR:-.}/query/create_table.sql:/opt/airflow/create_table.sql
+      #- ${AIRFLOW_PROJ_DIR:-.}/query/insert_table.sql:/opt/airflow/insert_table.sql
       #- ${AIRFLOW_PROJ_DIR:-.}/db/airflow.db:/opt/airflow/db/airflow.db
 
   airflow-cli:

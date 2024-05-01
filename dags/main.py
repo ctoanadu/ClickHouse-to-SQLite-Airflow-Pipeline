@@ -23,7 +23,7 @@ def create_table():
         destination_conn = sqlite3.connect("db/airflow.db")
         destination_cursor = destination_conn.cursor()
 
-        with open("../query/create_table.sql", "r") as file:
+        with open("create_table.sql", "r") as file:
             sql_query = file.read()
         destination_cursor.execute(sql_query)
         destination_conn.commit()
@@ -50,7 +50,7 @@ def extract_data():
             username="demo",
             password="demo",
         )
-        with open("../query/trip_data_query.sql", "r") as file:
+        with open("trip_data_query.sql", "r") as file:
             sql_query = file.read()
         return client.command(sql_query)
     except Exception as e:
@@ -91,7 +91,7 @@ def insert_table():
             formatted_data[i : i + 7] for i in range(0, len(formatted_data), 7)
         ]
 
-        with open("../query/insert_table.sql", "r") as file:
+        with open("insert_table.sql", "r") as file:
             sql_query = file.read()
 
         # Insert the retrieved data into the newly created tripdata table
