@@ -1,5 +1,5 @@
 # ClickHouse-to-SQLite-Airflow-Pipeline
-This repository hosts the codebase for a data pipeline designed to extract data from a ClickHouse database and store it in an SQLite database within an Airflow environment
+This repository contains the codebase for a data pipeline crafted to extract information from a ClickHouse database and seamlessly store it into an SQLite database. All of this orchestration is managed through Airflow, nestled within a Docker container.
 
 # README Documentation: ClickHouse to SQLite Data Pipeline with Airflow
 
